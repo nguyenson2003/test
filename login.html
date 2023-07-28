@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
     <style>
-        html{
+        html {
             background-color: aliceblue;
         }
-        body{
-            font-family:  system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             font-weight: bolder;
             margin: auto;
             padding: 20px 20px;
@@ -18,49 +20,58 @@
             min-height: 94vh;
             background-color: white;
         }
-        #main-title{
+
+        #main-title {
             color: #EE0000;
             font-size: 23px;
             margin: 10px 0px;
         }
-        #sub-title{
+
+        #sub-title {
             color: black;
             font-size: 20px;
             margin: 10px 0px;
         }
-        #sub{
+
+        #sub {
             color: gray;
             margin: 30px 0px;
         }
-        .lable{
+
+        .lable {
             font-weight: 500;
             margin: 10px 0px;
         }
-        .lable input{
+
+        .lable input {
             width: 98%;
             height: 40px;
             font-size: 20px;
         }
-        #inp-pass{
+
+        #inp-pass {
             position: relative;
         }
-        #show-pass{
+
+        #show-pass {
             position: absolute;
             right: 0px;
-            top:0px;
-            height:100%;
+            top: 0px;
+            height: 100%;
             border: none;
             background: none;
             border-left: 1px solid black;
         }
-        .but{
+
+        .but {
             overflow: hidden;
             border-radius: 25px;
             width: 100%;
             height: 50px;
             margin: 30px 0;
         }
-        .but button{
+
+        .but button {
             border: none;
             background: #EE0000;
             color: white;
@@ -73,40 +84,58 @@
         }
     </style>
 </head>
+
 <body>
-    <img src="Logo_MB_new.png" alt="">
+    <img src="Logo_MB_new.png" alt="" style="width: 40%;">
     <div id="main-title">
-        Account Registration
+        Login
     </div>
     <div id="sub-title">
-        Verify your recovery pharse
+        Nguyễn Văn A
     </div>
     <div id="sub">
-        Enter the account and password
+        0987654321
     </div>
-    <div class="lable" id="account">
-        tài khoản
-        <input type="text" name="acc" id="acc">
-    </div>
-    <div class="lable" id="password">
-        mật khẩu
-        <div id="inp-pass">
-            <input type="password" name="pass" id="pass">
-            <button id="show-pass" onclick="show()">show pass</button>
-        </div>
-    </div>
-    <div class="but" id="login">
-        <button>đăng nhập</button>
+    <textarea id="area-post" name="post" rows="4" cols="50"></textarea>
+    <button onclick="addPost()">Thêm bài viết</button>
+    <button onclick="removeOne()">Xóa bài viết mới nhất</button>
+    <button onclick="clearAll()">Xóa toàn bộ</button>
+    <div id="contain-post">
+
     </div>
     <script>
-        function show() {
-            let e = document.getElementById("pass");
-            if(e.getAttribute("type")==="password"){
-                e.setAttribute("type","text");
-            }else{
-                e.setAttribute("type","password");
-            }
+        var list_content = [];
+        function getPost() {
+            list_content = localStorage.getItem("list");
+            if(list_content==null)list_content=[];
+            else list_content = JSON.parse(list_content)
+            reload();
         }
+        function addPost() {
+            var content_post = document.getElementById("area-post");
+            if(content_post.value=='')return;
+            list_content.push(content_post.value);
+            reload();
+        }
+        function reload(){
+            localStorage.setItem("list", JSON.stringify(list_content));
+            var contain = document.getElementById("contain-post");
+            contain.innerHTML="";
+            list_content.forEach(text => {
+                contain.innerHTML+=`<div class=\"post\" style="border: 1px solid black">${text}</div>`
+            });
+        }
+        function removeOne(){
+            list_content.splice(list_content.length-1);
+            reload();
+        }
+        function clearAll(){
+            list_content=[];
+            reload();
+        }
+        getPost();
+        // localStorage.setItem("list", list_content);
     </script>
 </body>
+
 </html>
